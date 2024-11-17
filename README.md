@@ -9,29 +9,42 @@
 <img src="https://avatars.githubusercontent.com/u/8546082?s=280&v=4" width=50 height=50/>
 </div>
 
-## Bundler
+## To use this boilerplate
+```js 
+npx create-beyram-react-spa
+
+// or
+
+pnpm dlx create-beyram-react-spa
+
+// or 
+
+bunx create-beyram-react-spa
+```
+
+### Bundler
 
 - Vite
 
-## Styling
+### Styling
 
 - TailwindCSS
 - Shadcn
 
-## Router
+### Router
 
 - Tanstack Router
 
-## Queries
+### Queries
 
 - Tanstack Query
 - Axios
 
-## I18n
+### I18n
 
 - React-i18next
 - i18next
 
-## Dates
+### Dates
 
 - Date-fns
