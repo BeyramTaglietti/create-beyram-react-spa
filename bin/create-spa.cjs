@@ -31,12 +31,12 @@ try {
 
 async function main() {
   try {
-    console.log("Downloading files...");
+    console.log("Downloading files...\n");
     execSync(`git clone --depth 1 ${git_repo} ${projectPath}`);
 
     process.chdir(projectPath);
 
-    console.log("Removing useless files");
+    console.log("\nRemoving useless files");
 
     const gitPath = path.join(projectPath, ".git");
     if (fs.existsSync(gitPath)) {
@@ -54,7 +54,11 @@ async function main() {
       console.log("bin directory not found. Skipping removal.");
     }
 
-    console.log("The installation is done");
+    console.log("\nThe installation is done\n");
+    console.log("You can now do the following:\n");
+    console.log(`    cd ${projectName}`);
+    console.log("    pnpm install");
+    console.log("    code .\n");
   } catch (error) {
     console.log(error);
   }
