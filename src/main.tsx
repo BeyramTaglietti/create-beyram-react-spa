@@ -1,3 +1,8 @@
+import { queryClient } from "@/config";
+import { routeTree } from "@/routeTree.gen";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { setDefaultOptions } from "date-fns";
 import { it } from "date-fns/locale";
 import { StrictMode } from "react";
@@ -6,10 +11,6 @@ import "./i18n";
 import "./index.css";
 
 setDefaultOptions({ locale: it });
-
-// Import the generated route tree
-import { createRouter, RouterProvider } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
 
 // Create a new router instance
 const router = createRouter({
@@ -26,6 +27,9 @@ declare module "@tanstack/react-router" {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   </StrictMode>
 );
