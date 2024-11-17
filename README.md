@@ -1,50 +1,37 @@
-# React + TypeScript + Vite
+# This is my React SPA boilerplate
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<div style="display:flex; justify-content:space-between; align-items:center">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Vitejs-logo.svg/1039px-Vitejs-logo.svg.png" width=50 height=50/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/React_Logo_SVG.svg/1200px-React_Logo_SVG.svg.png" width=56 height=50/>
+<img src="https://seeklogo.com/images/S/shadcn-ui-logo-EF735EC0E5-seeklogo.com.png?v=638421451470000000" width=56 height=50/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/2560px-Tailwind_CSS_Logo.svg.png" width=70 height=50/>
+<img src="https://tanstack.com/_build/assets/logo-color-600w-Bx4vtR8J.png" width=50 height=50/>
+<img src="https://avatars.githubusercontent.com/u/8546082?s=280&v=4" width=50 height=50/>
+</div>
 
-Currently, two official plugins are available:
+## Bundler
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Vite
 
-## Expanding the ESLint configuration
+## Styling
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- TailwindCSS
+- Shadcn
 
-- Configure the top-level `parserOptions` property like this:
+## Router
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- Tanstack Router
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Queries
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- Tanstack Query
+- Axios
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## I18n
+
+- React-i18next
+- i18next
+
+## Dates
+
+- Date-fns
