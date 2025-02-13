@@ -46,6 +46,15 @@ async function main() {
       console.log(".git directory not found. Skipping removal.");
     }
 
+    console.log("\nSetting up package.json");
+    const packageJsonPath = path.join(projectPath, "package.json");
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath));
+    packageJson.name = projectName;
+    packageJson.version = "0.0.0";
+    delete packageJson.bin;
+
+    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+
     const binPath = "bin";
     if (fs.existsSync(binPath)) {
       fs.rmSync(path.join(projectPath, binPath), { recursive: true });
