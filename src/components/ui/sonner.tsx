@@ -1,9 +1,7 @@
 import { cn } from "@/utils";
 import { cva } from "class-variance-authority";
 import { useTheme } from "next-themes";
-import { Toaster as Sonner } from "sonner";
-
-type ToasterProps = React.ComponentProps<typeof Sonner>;
+import { Toaster as Sonner, ToasterProps } from "sonner";
 
 const toastVariants = cva(
   "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
