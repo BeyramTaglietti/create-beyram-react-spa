@@ -1,7 +1,7 @@
 import { cn } from "@/utils";
 import { cva } from "class-variance-authority";
 import { useTheme } from "next-themes";
-import { Toaster as Sonner, ToasterProps } from "sonner";
+import { Toaster as Sonner, type ToasterProps } from "sonner";
 
 const toastVariants = cva("", {
   variants: {
