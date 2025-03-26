@@ -1,6 +1,6 @@
 # This is my React SPA boilerplate
 
-<br/>
+This is a boilerplate for a React Single Page Application with amazing tools and libraries always up to date.
 
 <div style="display:flex; justify-content:space-between; align-items:center">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Vitejs-logo.svg/1039px-Vitejs-logo.svg.png" width=50 height=50/>
