@@ -5,9 +5,9 @@ This is a boilerplate for a React Single Page Application with amazing tools and
 <div style="display:flex; justify-content:space-between; align-items:center">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Vitejs-logo.svg/1039px-Vitejs-logo.svg.png" width=50 height=50/>
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/React_Logo_SVG.svg/1200px-React_Logo_SVG.svg.png" width=56 height=50/>
-<img src="https://seeklogo.com/images/S/shadcn-ui-logo-EF735EC0E5-seeklogo.com.png?v=638421451470000000" width=56 height=50/>
+<img src="https://avatars.githubusercontent.com/u/139895814?v=4" width=56 height=50/>
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/2560px-Tailwind_CSS_Logo.svg.png" width=70 height=50/>
-<img src="https://tanstack.com/_build/assets/logo-color-600w-Er4SOkq1.png" width=50 height=50/>
+<img src="https://tanstack.com/assets/splash-dark-8nwlc0Nt.png" width=50 height=50/>
 <img src="https://avatars.githubusercontent.com/u/8546082?s=280&v=4" width=50 height=50/>
 </div>
 
