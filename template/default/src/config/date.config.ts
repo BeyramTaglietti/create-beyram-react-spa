@@ -1,7 +1,3 @@
-/**
- * Date and time formats
- * @type {Object}
- */
 export const date_formats = {
   /**
    * Long date format (e.g., "01 Jan 2023")

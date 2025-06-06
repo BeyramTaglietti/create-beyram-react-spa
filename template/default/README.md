@@ -1,69 +1,54 @@
-# This is my React SPA boilerplate
+# React + TypeScript + Vite
 
-This is a boilerplate for a React Single Page Application with amazing tools and libraries always up to date.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-<div style="display:flex; justify-content:space-between; align-items:center">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Vitejs-logo.svg/1039px-Vitejs-logo.svg.png" width=50 height=50/>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/React_Logo_SVG.svg/1200px-React_Logo_SVG.svg.png" width=56 height=50/>
-<img src="https://avatars.githubusercontent.com/u/139895814?v=4" width=56 height=50/>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/2560px-Tailwind_CSS_Logo.svg.png" width=70 height=50/>
-<img src="https://tanstack.com/assets/splash-dark-8nwlc0Nt.png" width=50 height=50/>
-<img src="https://avatars.githubusercontent.com/u/8546082?s=280&v=4" width=50 height=50/>
-</div>
+Currently, two official plugins are available:
 
-<br/>
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## To use this boilerplate
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
 ```js
-npx create-beyram-react-spa
-// or
-pnpm dlx create-beyram-react-spa
-// or
-bunx create-beyram-react-spa
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
 ```
 
----
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-### Bundler
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-- Vite
-
-### Styling
-
-- TailwindCSS
-- Shadcn
-
-### Router
-
-- Tanstack Router
-
-### Queries
-
-- Tanstack Query
-- Axios
-
-### I18n
-
-- React-i18next
-- i18next
-
-### Dates
-
-- Date-fns
-
----
-
-### Complete list of dependencies
-
-- tailwindcss
-- tanstack router
-- tanstack query
-- react-i18next
-- i18next
-- date-fns
-- axios
-- shadcn/ui
-- sonner
-- @julr/vite-plugin-validate-env
-- husky
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
