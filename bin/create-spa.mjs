@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const { execSync } = require("child_process");
-const path = require("path");
-const fs = require("fs");
+import { execSync } from "child_process";
+import fs from "fs";
+import path from "path";
 
 if (process.argv.length < 3) {
   console.log("You have to provide a name to your app.");
@@ -40,7 +40,7 @@ async function main() {
 
     const gitPath = path.join(projectPath, ".git");
     if (fs.existsSync(gitPath)) {
-      fs.rmSync(gitPath, { recursive: true });
+      fs.rmSync(gitPath, { recursive: true, force: true });
       console.log("Removed .git directory");
     } else {
       console.log(".git directory not found. Skipping removal.");

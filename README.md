@@ -23,6 +23,8 @@ pnpm dlx create-beyram-react-spa
 bunx create-beyram-react-spa
 ```
 
+---
+
 ### Bundler
 
 - Vite
@@ -49,3 +51,19 @@ bunx create-beyram-react-spa
 ### Dates
 
 - Date-fns
+
+---
+
+### Complete list of dependencies
+
+- tailwindcss
+- tanstack router
+- tanstack query
+- react-i18next
+- i18next
+- date-fns
+- axios
+- shadcn/ui
+- sonner
+- @julr/vite-plugin-validate-env
+- husky
