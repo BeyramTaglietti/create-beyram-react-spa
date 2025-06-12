@@ -1,6 +1,6 @@
 {
   "name": "create-beyram-react-spa",
-  "private": true,
+  "private": false,
   "version": "1.4.0",
   "type": "module",
   "bin": {
