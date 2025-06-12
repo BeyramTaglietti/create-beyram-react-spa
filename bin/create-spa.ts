@@ -5,6 +5,21 @@ import * as fs from "fs";
 import { err, fromThrowable, ok, type Result } from "neverthrow";
 import path from "path";
 
+const log = {
+  colors: {
+    red: "\x1b[31m",
+    green: "\x1b[32m",
+    yellow: "\x1b[33m",
+    reset: "\x1b[0m",
+  },
+  error: (message: string): void => {
+    console.error(`${log.colors.red}${message}${log.colors.reset}`);
+  },
+  success: (message: string): void => {
+    console.log(`${log.colors.green}${message}${log.colors.reset}`);
+  },
+};
+
 const safeFns = {
   execSync: fromThrowable(execSync, (error: unknown): CliError => {
     return {
@@ -163,7 +178,7 @@ const initCli = async () => {
   const projectNameResult = parseCliArgs();
 
   if (projectNameResult.isErr()) {
-    console.error(`Error: ${projectNameResult.error.message}`);
+    log.error(`Error: ${projectNameResult.error.message}`);
     process.exit(1);
   }
 
@@ -183,7 +198,7 @@ const initCli = async () => {
 
     const mkdirResult = safeFns.mkdirSync(projectPath);
     if (mkdirResult.isErr()) {
-      console.error(`Error: ${mkdirResult.error.message}`);
+      log.error(`Error: ${mkdirResult.error.message}`);
       process.exit(1);
     }
   }
@@ -197,19 +212,19 @@ const initCli = async () => {
   const cloningResult = cloneAndCopyTemplate(git_repo, tempDir, projectPath);
 
   if (cloningResult.isErr()) {
-    console.error(`Error: ${cloningResult.error.message}`);
+    log.error(`Error: ${cloningResult.error.message}`);
     cleanupTempDir(tempDir).mapErr((err) => {
-      console.error(`Error: ${err.message}`);
+      log.error(`Error: ${err.message}`);
     });
     process.exit(1);
   }
 
-  const cleanupResult = cleanupTempDir(tempDir);
-
-  if (cleanupResult.isErr()) {
-    console.error(`Error: ${cleanupResult.error.message}`);
-    process.exit(1);
-  }
+  cleanupTempDir(tempDir).mapErr((cleanupResult) => {
+    log.error(`\nError during cleanup: ${cleanupResult.message}`);
+    log.error(
+      `\nPlease remove the temporary directory manually if it exists.\n`
+    );
+  });
 
   process.chdir(projectPath);
   console.log("\nSetting up package.json");
@@ -219,11 +234,13 @@ const initCli = async () => {
     projectName
   );
   if (updatingPackageJSONResult.isErr()) {
-    console.error(`Error: ${updatingPackageJSONResult.error.message}`);
+    log.error(`Error: ${updatingPackageJSONResult.error.message}`);
     process.exit(1);
   }
 
-  console.log("package.json updated successfully\n");
+  console.log("package.json updated");
+
+  log.success(`\nProject ${projectName} created successfully!\n`);
 
   console.log("You can now do the following:\n");
 
