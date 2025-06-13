@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-import { execSync } from "child_process";
-import * as fs from "fs";
 import { err, fromThrowable, ok, type Result } from "neverthrow";
-import path from "path";
+import { execSync } from "node:child_process";
+import * as fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const log = {
   colors: {
@@ -66,6 +67,18 @@ const safeFns = {
     };
   }),
 
+  readdirSync: fromThrowable(
+    (path: string) => fs.readdirSync(path),
+    (error: unknown): CliError => {
+      return {
+        code: "FS",
+        message: `Failed to read directory: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      };
+    }
+  ),
+
   writeFileSync: fromThrowable(fs.writeFileSync, (error: unknown): CliError => {
     return {
       code: "FS",
@@ -111,42 +124,48 @@ const parseCliArgs = (): Result<string, CliError> => {
   return ok(projectName);
 };
 
-const cleanupTempDir = (tempDir: string): Result<void, CliError> => {
-  console.log("Cleaning up temporary files...");
-  if (fs.existsSync(tempDir)) {
-    return safeFns.rmSync(tempDir, { recursive: true, force: true });
-  } else {
+const copyTemplate = (
+  projectPath: string,
+  templateName: string
+): Result<void, CliError> => {
+  const templateDir = path.resolve(
+    fileURLToPath(import.meta.url),
+    "../..",
+    "template",
+    templateName
+  );
+
+  if (!fs.existsSync(templateDir)) {
     return err({
       code: "FS",
-      message: `Temporary directory ${tempDir} does not exist.`,
+      message: `Template '${templateName}' not found.`,
     });
   }
-};
 
-const cloneAndCopyTemplate = (
-  git_repo: string,
-  tempDir: string,
-  projectPath: string
-): Result<void, CliError> => {
-  return safeFns
-    .execSync(`git clone --depth 1 --branch master ${git_repo} ${tempDir}`)
-    .andThen(() => {
-      const templatePath = path.join(tempDir, "template/default");
-
-      if (!fs.existsSync(templatePath)) {
-        return err<void, CliError>({
-          code: "FS",
-          message: "Template directory not found in the repository.",
-        });
-      }
-
-      return safeFns.cpSync(templatePath, projectPath, {
-        recursive: true,
-      });
-    })
-    .map(() => {
-      console.log("Template files copied successfully");
+  const readingResult = safeFns.readdirSync(templateDir);
+  if (readingResult.isErr()) {
+    return err({
+      code: "FS",
+      message: `Failed to read template directory: ${readingResult.error.message}`,
     });
+  }
+
+  const files = readingResult.value;
+
+  for (const file of files) {
+    const srcFile = path.join(templateDir, file);
+    const destFile = path.join(projectPath, file);
+
+    const copyResult = safeFns.cpSync(srcFile, destFile, { recursive: true });
+    if (copyResult.isErr()) {
+      return err({
+        code: "FS",
+        message: `Failed to copy template file '${file}': ${copyResult.error.message}`,
+      });
+    }
+  }
+
+  return ok();
 };
 
 const readAndUpdatePackageJson = (
@@ -203,28 +222,14 @@ const initCli = async () => {
     }
   }
 
-  const git_repo = "https://github.com/BeyramTaglietti/beyram-react-spa";
-  const tempDir = path.join(currentPath, `__temp_${projectName}`);
-
   console.log("Downloading files...\n");
 
-  // Clone the repository into a temporary directory
-  const cloningResult = cloneAndCopyTemplate(git_repo, tempDir, projectPath);
+  const cloningResult = copyTemplate(projectPath, "default");
 
   if (cloningResult.isErr()) {
     log.error(`Error: ${cloningResult.error.message}`);
-    cleanupTempDir(tempDir).mapErr((err) => {
-      log.error(`Error: ${err.message}`);
-    });
     process.exit(1);
   }
-
-  cleanupTempDir(tempDir).mapErr((cleanupResult) => {
-    log.error(`\nError during cleanup: ${cleanupResult.message}`);
-    log.error(
-      `\nPlease remove the temporary directory manually if it exists.\n`
-    );
-  });
 
   process.chdir(projectPath);
   console.log("\nSetting up package.json");

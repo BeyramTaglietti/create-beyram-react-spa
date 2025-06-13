@@ -16,11 +16,13 @@ This is a boilerplate for a React Single Page Application with amazing tools and
 ## To use this boilerplate
 
 ```js
-npx create-beyram-react-spa mytestapp
+npx create beyram-react-spa mytestapp
 // or
-pnpm dlx create-beyram-react-spa mytestapp
+pnpm dlx create beyram-react-spa mytestapp
 // or 
-bunx create-beyram-react-spa mytestapp
+bunx create beyram-react-spa mytestapp
+// or
+deno init --npm beyram-react-spa mytestapp
 ```
 
 ---
