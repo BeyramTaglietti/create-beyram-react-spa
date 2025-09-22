@@ -23,6 +23,9 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
+    /* Extra */
+    "noUncheckedIndexedAccess": true,
+
     /* Shadcn Configuration */
     "baseUrl": ".",
     "paths": {

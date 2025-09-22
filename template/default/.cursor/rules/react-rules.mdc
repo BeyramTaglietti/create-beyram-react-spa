@@ -1,0 +1,138 @@
+---
+alwaysApply: true
+---
+
+# Rules
+
+## Typescript
+
+- types are really important, so its use is mandatory and enforced.
+- Avoid using `any` or `unknown`. Look for type definitions in the codebase instead.
+- Avoid type assertions with `as` or `!`.
+- Use Types instead of interfaces.
+- Always use === instead of == for comparisons.
+- Function return types are always explicit
+
+## Data Fetching
+
+- Use TanStack Query for all queries and mutations.
+- All HTTP requests must use the axiosClient instance from axios.config.ts.
+- API functions live in files ending with .api.ts.
+- Query/mutation logic belongs in files ending with .query.ts.
+
+## Dates
+
+- Use date-fns for all date operations.
+- API always return dates as string, whoever is using the data should parse it using date-fns.
+- There's a date.config.ts file that contains the date formats used in the project.
+
+## Styling
+
+- Tailwind CSS is used.
+- Unless explicitly requested, all components should remain unstyled.
+
+## Programming style
+
+- Use functional and declarative programming patterns; avoid classes.
+- Use descriptive variable names with auxiliary verbs (e.g., isLoaded, hasError).
+- Imports are always through a barrell exports file
+- Use declarative JSX, keeping JSX minimal and readable.
+- Early returns are not preferred, use conditionals instead for a clearer code flow.
+- Always wrap functions in a useCallback hook.
+- Always use the useMemo hook to memoize values.
+- Use the Show or the Switch component from the common/Conditionals.tsx file to conditionally render components, avoid ternary operators, fallback props is not always required, omit it if that's the case.
+- When data comes from a tanstack query, try using the If component to conditionally render the various states
+- Component prop types are declared above it using the syntax: componentName + Props
+- Component props are always destructured
+- Smaller components are defined within the same file
+- Components always start from a Fragment
+
+Example:
+
+```typescript
+const Component = () => {
+  return (
+    <>
+      <div>...</div>
+    </>
+  );
+};
+```
+
+- when mapping over a list, always use a fragment as the parent element and assign the key to the fragment element
+
+Example:
+
+```typescript
+const Component = () => {
+  return (
+    <>
+      {data.map((item) => (
+        <Fragment key={item.id}>
+          <span>{item.name}</span>
+        </Fragment>
+      ))}
+    </>
+  );
+};
+```
+
+## Code Changes
+
+- Make the smallest changes necessary to meet requirements.
+- Never add packages to the project before asking for approval.
+- If you are using a package, make sure you check its documentation and make sure it is the best solution for the problem.
+
+## Directory Structure
+
+- The codebase is organized into the following directories:
+  - src/app/
+  - src/components/
+  - src/hooks/
+  - src/lib/
+  - src/pages/
+  - src/features -> each feature has its own directory with the above mentioned structure, those above are shared between features
+- Follow the directory filename structure, usually files end in . + the file type, example: .api.ts for api functions, .query.ts for query functions, .types.ts for types, .utils.ts for utils, etc.
+- Each directory should have a index.ts file that exports all the files in the directory.
+
+## Package specific rules
+
+- Zustand: Never import the store directly, always use the exported hooks that are inside the same file, if missing, create them.
+- Lucide: Always use the icons that end with `Icon` in their name.
+- Shadcn: Never edit a shadcn component, it's up to the user to decide how to style it.
+- Zod: Always use the zod schema as the form validation schema.
+
+## TanStack Query
+
+- Query keys must be organized in a map object where each key is a function that returns the query key array.
+- The query keys object should be named `{featureName}QueryKeys` (e.g., `projectQueryKeys`).
+- Each query key function should accept the necessary parameters and return an array.
+- For queries: Export functions that return `queryOptions` objects (e.g., `getProjectsQueryOptions`).
+- For mutations: Export `useMutation` hooks (e.g., `useChangeProjectStatusMutation`).
+- Query key functions should be used consistently in both query options and mutation invalidation.
+
+Example structure:
+
+```typescript
+export const projectQueryKeys = {
+  list: (filters: GetProjectsParams) => ["projects", filters],
+};
+
+export const getProjectsQueryOptions = (filters: GetProjectsParams) =>
+  queryOptions({
+    queryKey: projectQueryKeys.list(filters),
+    queryFn: () => projectApi.getProjects(filters),
+  });
+
+export const useChangeProjectStatusMutation = (id: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: projectApi.changeProjectStatus,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: projectQueryKeys.detail(id),
+      });
+    },
+  });
+};
+```
