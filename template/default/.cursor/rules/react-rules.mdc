@@ -29,7 +29,7 @@ alwaysApply: true
 ## Styling
 
 - Tailwind CSS is used.
-- Unless explicitly requested, all components should remain unstyled.
+- Unless explicitly requested, all created components should remain unstyled.
 
 ## Programming style
 
@@ -38,10 +38,8 @@ alwaysApply: true
 - Imports are always through a barrell exports file
 - Use declarative JSX, keeping JSX minimal and readable.
 - Early returns are not preferred, use conditionals instead for a clearer code flow.
-- Always wrap functions in a useCallback hook.
-- Always use the useMemo hook to memoize values.
-- Use the Show or the Switch component from the common/Conditionals.tsx file to conditionally render components, avoid ternary operators, fallback props is not always required, omit it if that's the case.
-- When data comes from a tanstack query, try using the If component to conditionally render the various states
+- Don't use useCallback or useMemo, those will be handled by the react compiler
+- When data comes from a tanstack query, use the If component to conditionally render the various states
 - Component prop types are declared above it using the syntax: componentName + Props
 - Component props are always destructured
 - Smaller components are defined within the same file
@@ -82,6 +80,7 @@ const Component = () => {
 - Make the smallest changes necessary to meet requirements.
 - Never add packages to the project before asking for approval.
 - If you are using a package, make sure you check its documentation and make sure it is the best solution for the problem.
+- Don't ask/try to run cli commands
 
 ## Directory Structure
 
