@@ -8,6 +8,7 @@ alwaysApply: true
 
 - types are really important, so its use is mandatory and enforced.
 - Avoid using `any` or `unknown`. Look for type definitions in the codebase instead.
+- Avoid ignoring typescript errors with `// @ts-ignore` or `// @ts-expect-error`.
 - Avoid type assertions with `as` or `!`.
 - Use Types instead of interfaces.
 - Always use === instead of == for comparisons.
@@ -91,12 +92,11 @@ const Component = () => {
   - src/lib/
   - src/pages/
   - src/features -> each feature has its own directory with the above mentioned structure, those above are shared between features
-- Follow the directory filename structure, usually files end in . + the file type, example: .api.ts for api functions, .query.ts for query functions, .types.ts for types, .utils.ts for utils, etc.
-- Each directory should have a index.ts file that exports all the files in the directory.
+- Follow the directory filename structure, usually files end in . + the file type, example: .api.ts for api functions, .queries.ts for query functions, .mutations.ts for mutation functions, .types.ts for types, .utils.ts for utils, etc.
+- Each directory should have a index.ts file that exports all the files in the directory except for the feature's directory.
 
 ## Package specific rules
 
-- Zustand: Never import the store directly, always use the exported hooks that are inside the same file, if missing, create them.
 - Lucide: Always use the icons that end with `Icon` in their name.
 - Shadcn: Never edit a shadcn component, it's up to the user to decide how to style it.
 - Zod: Always use the zod schema as the form validation schema.

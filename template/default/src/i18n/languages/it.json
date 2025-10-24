@@ -1,5 +1,8 @@
 {
   "app": {
-    "home": "Home"
+    "home": "Home",
+    "loading_error": "Errore durante il caricamento dei dati",
+    "retry": "Riprova",
+    "no_data": "Nessun dato trovato"
   }
 }
