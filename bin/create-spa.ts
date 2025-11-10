@@ -152,7 +152,19 @@ const copyTemplate = (
 
   const files = readingResult.value;
 
+  const filesToSkip = [
+    "node_modules",
+    "pnpm-lock.yaml",
+    "package-lock.json",
+    "yarn.lock",
+    "bun.lockb",
+  ];
+
   for (const file of files) {
+    if (filesToSkip.includes(file)) {
+      continue;
+    }
+
     const srcFile = path.join(templateDir, file);
     const destFile = path.join(projectPath, file);
 

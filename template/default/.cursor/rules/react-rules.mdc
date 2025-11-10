@@ -12,14 +12,14 @@ alwaysApply: true
 - Avoid type assertions with `as` or `!`.
 - Use Types instead of interfaces.
 - Always use === instead of == for comparisons.
-- Function return types are always explicit
+- Function return types are always explicit except for components, which should be inferred by the compiler.
 
 ## Data Fetching
 
 - Use TanStack Query for all queries and mutations.
 - All HTTP requests must use the axiosClient instance from axios.config.ts.
 - API functions live in files ending with .api.ts.
-- Query/mutation logic belongs in files ending with .query.ts.
+- Query logic belongs in files ending with .queries.ts. and mutation logic in files ending with .mutations.ts.
 
 ## Dates
 
@@ -39,7 +39,7 @@ alwaysApply: true
 - Imports are always through a barrell exports file
 - Use declarative JSX, keeping JSX minimal and readable.
 - Early returns are not preferred, use conditionals instead for a clearer code flow.
-- Don't use useCallback or useMemo, those will be handled by the react compiler
+- Don't use useCallback or useMemo memoizations, those will be handled by the react compiler
 - When data comes from a tanstack query, use the If component to conditionally render the various states
 - Component prop types are declared above it using the syntax: componentName + Props
 - Component props are always destructured
@@ -92,14 +92,25 @@ const Component = () => {
   - src/lib/
   - src/pages/
   - src/features -> each feature has its own directory with the above mentioned structure, those above are shared between features
-- Follow the directory filename structure, usually files end in . + the file type, example: .api.ts for api functions, .queries.ts for query functions, .mutations.ts for mutation functions, .types.ts for types, .utils.ts for utils, etc.
+- Follow the directory filename structure, usually files end in . + the file type except for components:
+  - .api.ts for api functions
+  - .queries.ts for query functions
+  - .mutations.ts for mutation functions
+  - .types.ts for types
+  - .utils.ts for utils
+  - .hooks.ts for hooks
+  - .page.ts for pages
+  - .dto.ts for data transfer objects (ResponseModel/RequestModel)
+  - .validation.ts for validation schemas
+  - .models.ts for models
+  - etc...
 - Each directory should have a index.ts file that exports all the files in the directory except for the feature's directory.
 
 ## Package specific rules
 
 - Lucide: Always use the icons that end with `Icon` in their name.
 - Shadcn: Never edit a shadcn component, it's up to the user to decide how to style it.
-- Zod: Always use the zod schema as the form validation schema.
+- Zod: Always use the zod schema as the form validation schema for forms.
 
 ## TanStack Query
 
@@ -107,7 +118,7 @@ const Component = () => {
 - The query keys object should be named `{featureName}QueryKeys` (e.g., `projectQueryKeys`).
 - Each query key function should accept the necessary parameters and return an array.
 - For queries: Export functions that return `queryOptions` objects (e.g., `getProjectsQueryOptions`).
-- For mutations: Export `useMutation` hooks (e.g., `useChangeProjectStatusMutation`).
+- For mutations: Export `mutationOptions` objects (e.g., `changeProjectStatusMutationOptions`).
 - Query key functions should be used consistently in both query options and mutation invalidation.
 
 Example structure:
@@ -123,9 +134,8 @@ export const getProjectsQueryOptions = (filters: GetProjectsParams) =>
     queryFn: () => projectApi.getProjects(filters),
   });
 
-export const useChangeProjectStatusMutation = (id: string) => {
-  const queryClient = useQueryClient();
-  return useMutation({
+export const changeProjectStatusMutationOptions = (id: string) =>
+  mutationOptions({
     mutationFn: projectApi.changeProjectStatus,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -133,5 +143,4 @@ export const useChangeProjectStatusMutation = (id: string) => {
       });
     },
   });
-};
 ```
