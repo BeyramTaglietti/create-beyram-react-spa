@@ -2,9 +2,9 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { type ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Spinner } from "../ui";
-import { ErrorRetry } from "./ErrorRetry";
+import { ErrorRetry } from "./error-retry";
 
-type IfProps<T, E = Error> = {
+type QueryProps<T, E = Error> = {
   query: UseQueryResult<T, E>;
   errorComponent?: ReactElement | null;
   emptyComponent?: ReactElement | null;
@@ -12,7 +12,7 @@ type IfProps<T, E = Error> = {
   loadingComponent?: ReactElement | null;
   children: (data: T) => ReactElement;
 };
-export const If = <T, E = Error>(props: IfProps<T, E>) => {
+export const Query = <T, E = Error>(props: QueryProps<T, E>) => {
   const ErrorComponent = props.errorComponent ?? (
     <ErrorRetry onRetry={() => props.query.refetch()} />
   );

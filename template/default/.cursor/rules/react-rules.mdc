@@ -40,7 +40,7 @@ alwaysApply: true
 - Use declarative JSX, keeping JSX minimal and readable.
 - Early returns are not preferred, use conditionals instead for a clearer code flow.
 - Don't use useCallback or useMemo memoizations, those will be handled by the react compiler
-- When data comes from a tanstack query, use the If component to conditionally render the various states
+- When data comes from a tanstack query, use the Query component to conditionally render the various states
 - Component prop types are declared above it using the syntax: componentName + Props
 - Component props are always destructured
 - Smaller components are defined within the same file
